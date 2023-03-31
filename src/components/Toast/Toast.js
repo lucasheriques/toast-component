@@ -24,10 +24,17 @@ function Toast({ variant, message, killToast }) {
       <div className={styles.iconContainer}>
         <Info size={24} />
       </div>
-      <p className={styles.content}>{message}</p>
-      <button className={styles.closeButton} onClick={killToast}>
+      <p className={styles.content}>
+        {variant === "error" && <VisuallyHidden>error –</VisuallyHidden>}
+        {message}
+      </p>
+      <button
+        className={styles.closeButton}
+        onClick={killToast}
+        aria-label="Dismiss message"
+        aria-live="off"
+      >
         <X size={24} />
-        <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
   );
