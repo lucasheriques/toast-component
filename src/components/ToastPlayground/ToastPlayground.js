@@ -2,6 +2,7 @@ import React from "react";
 
 import Button from "../Button";
 import Toast from "../Toast/Toast";
+import ToastShelf from "../ToastShelf/ToastShelf";
 
 import styles from "./ToastPlayground.module.css";
 
@@ -10,7 +11,14 @@ const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 function ToastPlayground() {
   const [message, setMessage] = React.useState("");
   const [variant, setVariant] = React.useState("notice");
-  const [showToast, setShowToast] = React.useState(false);
+  const [currentToasts, setCurrentToasts] = React.useState([]);
+
+  console.log(currentToasts);
+
+  function killToast(id) {
+    const newToasts = [...currentToasts].filter((toast) => toast.id !== id);
+    setCurrentToasts(newToasts);
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -19,13 +27,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {showToast && (
-        <Toast
-          variant={variant}
-          message={message}
-          hideToast={() => setShowToast(false)}
-        />
-      )}
+      <ToastShelf toasts={currentToasts} killToast={killToast} />
 
       <div className={styles.controlsWrapper}>
         <div className={styles.row}>
@@ -69,7 +71,9 @@ function ToastPlayground() {
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
             <Button
               onClick={() => {
-                setShowToast(true);
+                const newToasts = [...currentToasts];
+                newToasts.push({ id: Math.random(), message, variant });
+                setCurrentToasts(newToasts);
               }}
             >
               Pop Toast!
