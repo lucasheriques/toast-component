@@ -14,6 +14,11 @@ function ToastPlayground() {
   const [variant, setVariant] = React.useState("notice");
   const { addToast } = React.useContext(ToastContext);
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    addToast({ variant, message });
+  }
+
   return (
     <div className={styles.wrapper}>
       <header>
@@ -23,7 +28,7 @@ function ToastPlayground() {
 
       <ToastShelf />
 
-      <div className={styles.controlsWrapper}>
+      <form className={styles.controlsWrapper} onSubmit={handleSubmit}>
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -63,16 +68,10 @@ function ToastPlayground() {
         <div className={styles.row}>
           <div className={styles.label} />
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-            <Button
-              onClick={() => {
-                addToast({ variant, message });
-              }}
-            >
-              Pop Toast!
-            </Button>
+            <Button type="submit">Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
